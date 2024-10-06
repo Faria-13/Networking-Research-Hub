@@ -27,7 +27,7 @@ def capture_traffic(interface, output_file):
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
         with open(output_file, 'w') as file:
-            process = subprocess.Popen(['tcpdump', '-i', interface], stdout=file)
+            process = subprocess.Popen(['sudo', 'tshark', '-i', interface, '-x'], stdout=file, stderr=subprocess.PIPE)
             process.wait()
     except KeyboardInterrupt:
         print("\nCapture stopped.")
