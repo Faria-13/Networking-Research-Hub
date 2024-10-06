@@ -22,17 +22,50 @@ def list_interfaces():
         print("OOPS")
         return []
 
+# def capture_traffic(interface, output_file):
+#     """Runs tcpdump on the selected interface and writes the output to a file"""
+#     try:
+#         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
+#         interface = interface.split()
+#         with open(output_file, 'w') as file:
+#             process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-x', '-t', 'a'], stdout=file, stderr=subprocess.PIPE)
+#             process.wait()
+#     except KeyboardInterrupt:
+#         print("\nCapture stopped.")
+#         process.terminate()
+
 def capture_traffic(interface, output_file):
-    """Runs tcpdump on the selected interface and writes the output to a file"""
+    """Captures traffic on the selected interface and writes the output to a file."""
+    pcap_file = 'capture.pcap'  # Temporary PCAP file name
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
+        
+        # Step 1: Capture traffic into a PCAP file
         interface = interface.split()
+        capture_command = ['sudo', 'tshark', '-i', interface[0], '-t', 'a', '-w', pcap_file]
+        
+        # Start capturing packets
+        process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
+        try:
+            process.wait()  # Wait for the process to complete
+        except KeyboardInterrupt:
+            print("\nCapture stopped.")
+            process.terminate()
+        
+        # Step 2: Read the captured PCAP file and write to the output text file
         with open(output_file, 'w') as file:
-            process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-x', '-t', 'a'], stdout=file, stderr=subprocess.PIPE)
-            process.wait()
-    except KeyboardInterrupt:
-        print("\nCapture stopped.")
-        process.terminate()
+            tshark_read_command = ['tshark', '-r', pcap_file, '-x', '-t', 'a']
+            tshark_process = subprocess.Popen(tshark_read_command, stdout=file, stderr=subprocess.PIPE)
+            tshark_process.communicate()  # Wait for TShark to finish
+        
+        print(f"Output saved to {output_file}.")
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        # Cleanup: Remove the temporary PCAP file if it exists
+        if subprocess.call(['rm', '-f', pcap_file]) != 0:
+            print("Failed to remove the temporary PCAP file.")
 
 def main():
     print("Listing available network interfaces...\n")
