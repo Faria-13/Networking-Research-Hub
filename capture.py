@@ -56,7 +56,7 @@ def list_interfaces():
 
 def capture_traffic(interface, output_file):
     """Captures traffic on the selected interface and writes the output to a file."""
-    pcap_file = 'capture.pcap'  # Temporary PCAP file name
+    pcap_file = 'rawcap.pcapng'  # Temporary PCAP file name
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
         
