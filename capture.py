@@ -34,27 +34,54 @@ def list_interfaces():
 #         print("\nCapture stopped.")
 #         process.terminate()
 
+# def capture_traffic(interface, output_file):
+#     """Runs tcpdump on the selected interface and writes the output to a file"""
+#     try:
+#         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
+#         interface = interface.split()
+#         capture_file = "rawcap.pcapng"
+#         with open(capture_file, 'w') as file:
+#             process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-w', capture_file, '-c', '2'], stdout=file, stderr=subprocess.PIPE)
+#             process.wait()
+#     except KeyboardInterrupt:
+#         print("\nCapture stopped.")
+#         process.terminate()
+
+#     try:
+#         with open(output_file, 'w') as file:
+#             process = subprocess.Popen(['sudo', 'tshark', '-r', capture_file, '-F', 'k12text', '-w', output_file], stdout=file, stderr=subprocess.PIPE)
+#     except Exception as e:
+#         print(e)
+#         print("Couldn't convert")
+
 def capture_traffic(interface, output_file):
-    """Runs tcpdump on the selected interface and writes the output to a file"""
+    """Captures traffic on the selected interface and writes the output to a file."""
+    pcap_file = 'capture.pcap'  # Temporary PCAP file name
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
+        
+        # Step 1: Capture traffic into a PCAP file
         interface = interface.split()
-        capture_file = "rawcap.pcapng"
-        with open(capture_file, 'w') as file:
-            process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-w', capture_file, '-c', '2'], stdout=file, stderr=subprocess.PIPE)
-            process.wait()
-    except KeyboardInterrupt:
-        print("\nCapture stopped.")
-        process.terminate()
-
-    try:
+        capture_command = ['tshark', '-i', interface[0], '-w', pcap_file]
+        
+        # Start capturing packets
+        process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
+        try:
+            process.wait()  # Wait for the process to complete
+        except KeyboardInterrupt:
+            print("\nCapture stopped.")
+            process.terminate()
+        
+        # Step 2: Read the captured PCAP file and write to the output text file
         with open(output_file, 'w') as file:
-            process = subprocess.Popen(['sudo', 'tshark', '-r', capture_file, '-F', 'k12text', '-w', output_file], stdout=file, stderr=subprocess.PIPE)
-    except Exception as e:
-        print(e)
-        print("Couldn't convert")
-
+            tshark_read_command = ['tshark', '-r', pcap_file, '-F', 'k12text', '-w', output_file]
+            tshark_process = subprocess.Popen(tshark_read_command, stdout=file, stderr=subprocess.PIPE)
+            tshark_process.communicate()  # Wait for TShark to finish
+        
+        print(f"Output saved to {output_file}.")
     
+    except Exception as e:
+        print(f"An error occurred: {e}") 
 
 
 
