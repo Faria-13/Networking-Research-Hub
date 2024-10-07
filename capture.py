@@ -62,7 +62,7 @@ def capture_traffic(interface, output_file):
         
         # Step 1: Capture traffic into a PCAP file
         interface = interface.split()
-        capture_command = ['tshark', '-i', interface[0], '-w', pcap_file]
+        capture_command = ['tshark', '-i', interface[0], '-w', pcap_file, '-c', '2']
         
         # Start capturing packets
         process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
