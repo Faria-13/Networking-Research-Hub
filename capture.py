@@ -34,6 +34,26 @@ def capture_traffic(interface, output_file):
         print("\nCapture stopped.")
         process.terminate()
 
+def capture_traffic(interface, output_file):
+    """Runs tcpdump on the selected interface and writes the output to a file"""
+    try:
+        print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
+        interface = interface.split()
+        capture_file = "rawcap.pcapng"
+        with open(output_file, 'w') as file:
+            process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-w', capture_file, '-c', '2'], stdout=file, stderr=subprocess.PIPE)
+            process.wait()
+    except KeyboardInterrupt:
+        print("\nCapture stopped.")
+        process.terminate()
+
+    try:
+        process = subprocess.Popen(['sudo', 'tshark', '-r', capture_file, '-F', 'k12text', '-w', output_file], stdout=file, stderr=subprocess.PIPE)
+    except:
+        print("Couldn't convert")
+
+    
+
 
 
 def main():
