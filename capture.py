@@ -49,7 +49,8 @@ def capture_traffic(interface, output_file):
 
     try:
         process = subprocess.Popen(['sudo', 'tshark', '-r', capture_file, '-F', 'k12text', '-w', output_file], stdout=file, stderr=subprocess.PIPE)
-    except:
+    except Exception as e:
+        print(e)
         print("Couldn't convert")
 
     
