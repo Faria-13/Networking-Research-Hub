@@ -22,52 +22,19 @@ def list_interfaces():
         print("OOPS")
         return []
 
-# def capture_traffic(interface, output_file):
-#     """Runs tcpdump on the selected interface and writes the output to a file"""
-#     try:
-#         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
-#         interface = interface.split()
-#         with open(output_file, 'w') as file:
-#             process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-x', '-t', 'a'], stdout=file, stderr=subprocess.PIPE)
-#             process.wait()
-#     except KeyboardInterrupt:
-#         print("\nCapture stopped.")
-#         process.terminate()
-
-# def capture_traffic(interface, output_file):
-#     """Runs tcpdump on the selected interface and writes the output to a file"""
-#     try:
-#         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
-#         interface = interface.split()
-#         capture_file = "rawcap.pcapng"
-#         with open(capture_file, 'w') as file:
-#             process = subprocess.Popen(['sudo', 'tshark', '-i', interface[0], '-w', capture_file, '-c', '2'], stdout=file, stderr=subprocess.PIPE)
-#             process.wait()
-#     except KeyboardInterrupt:
-#         print("\nCapture stopped.")
-#         process.terminate()
-
-#     try:
-#         with open(output_file, 'w') as file:
-#             process = subprocess.Popen(['sudo', 'tshark', '-r', capture_file, '-F', 'k12text', '-w', output_file], stdout=file, stderr=subprocess.PIPE)
-#     except Exception as e:
-#         print(e)
-#         print("Couldn't convert")
 
 def capture_traffic(interface, output_file):
     """Captures traffic on the selected interface and writes the output to a file."""
-    pcap_file = 'rawcap.pcapng'  # Temporary PCAP file name
+    pcap_file = 'rawcap.pcapng'  # this file has alr been created and 777 on permissions
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
         
-        # Step 1: Capture traffic into a PCAP file
-        interface = interface.split()
-        capture_command = ['tshark', '-i', interface[0], '-w', pcap_file, '-c', '2']
         
-        # Start capturing packets
+        interface = interface.split()
+        capture_command = ['tshark', '-i', interface[0], '-w', pcap_file]
         process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
         try:
-            process.wait()  # Wait for the process to complete
+            process.wait()  # Wait stage until keyboard interrupt
         except KeyboardInterrupt:
             print("\nCapture stopped.")
             process.terminate()
@@ -94,23 +61,23 @@ def main():
         return
     
     # Display options to the user
-    for idx, iface in enumerate(interfaces):
-        print(f"{idx + 1}: {iface}")
+    for index, iface in enumerate(interfaces):
+        print(f"{index + 1}: {iface}")
     
     try:
-        # Ask the user to choose an interface
+        
         choice = int(input("\nEnter the number of the interface to capture on: ")) - 1
         if choice < 0 or choice >= len(interfaces):
             print("Invalid choice. Exiting.")
             return
         
         # Ask the user for the output filename
-        output_file = input("Enter the name of the output file (e.g., capture.txt): ")
+        output_file = input("Enter the name of the output file (e.g., foobar.txt): ")
         if not output_file:
             print("Invalid file name. Exiting.")
             return
 
-        # Run the capture
+        # function call
         capture_traffic(interfaces[choice], output_file)
 
     except ValueError:
