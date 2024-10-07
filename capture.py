@@ -31,7 +31,7 @@ def capture_traffic(interface, output_file):
         
         
         interface = interface.split()
-        capture_command = ['tshark', '-i', interface[0], '-w', pcap_file]
+        capture_command = ['sudo','tshark', '-i', interface[0], '-w', pcap_file]
         process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
         try:
             process.wait()  # Wait stage until keyboard interrupt
@@ -41,7 +41,7 @@ def capture_traffic(interface, output_file):
         
         # Step 2: Read the captured PCAP file and write to the output text file
         with open(output_file, 'w') as file:
-            tshark_read_command = ['tshark', '-r', pcap_file, '-F', 'k12text', '-w', output_file]
+            tshark_read_command = ['sudo','tshark', '-r', pcap_file, '-F', 'k12text', '-w', output_file]
             tshark_process = subprocess.Popen(tshark_read_command, stdout=file, stderr=subprocess.PIPE)
             tshark_process.communicate()  # Wait for TShark to finish
         
