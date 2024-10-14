@@ -23,7 +23,7 @@ def list_interfaces():
         return []
 
 
-def capture_traffic(interface, output_file):
+def capture_traffic(interface, output_file, num_of_packets):
     """Captures traffic on the selected interface and writes the output to a file."""
     pcap_file = 'rawcap.pcapng'  # this file has alr been created and 777 on permissions
     try:
@@ -31,7 +31,7 @@ def capture_traffic(interface, output_file):
         
         
         interface = interface.split()
-        capture_command = ['sudo','tshark', '-i', interface[0], '-w', pcap_file]
+        capture_command = ['sudo','tshark', '-i', interface[0], '-w', pcap_file, '-c', num_of_packets]
         process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
         try:
             process.wait()  # Wait stage until keyboard interrupt
@@ -77,8 +77,10 @@ def main():
             print("Invalid file name. Exiting.")
             return
 
+        num_of_packets = input ("How many packets do you want captured?")
+
         # function call
-        capture_traffic(interfaces[choice], output_file)
+        capture_traffic(interfaces[choice], output_file, num_of_packets)
 
     except ValueError:
         print("Invalid input. Please enter a valid number.")
