@@ -72,7 +72,8 @@ def main():
             return
         
         # Ask the user for the output filename
-        output_file = input("Enter the name of the output file (e.g., foobar.txt): ")
+        # output_file = input("Enter the name of the output file (e.g., foobar.txt): ")
+        output_file = 'foobar.txt'
         if not output_file:
             print("Invalid file name. Exiting.")
             return
