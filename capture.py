@@ -22,35 +22,37 @@ def list_interfaces():
         print("OOPS")
         return []
 
+import subprocess
 
 def capture_traffic(interface, output_file, num_of_packets):
-    
-    pcap_file = 'rawcap.pcapng'  # this file has alr been created and 777 on permissions
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
         
-        
+        # Split the interface string to handle multiple words if necessary
         interface = interface.split()
-        # capture_command = ['sudo','tshark', '-i', interface[0], '-w', pcap_file, '-c', num_of_packets]
-        capture_command = ['sudo','tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', num_of_packets]
-        process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
-        try:
-            process.wait()  # Wait stage until keyboard interrupt
-        except KeyboardInterrupt:
-            print("\nCapture stopped.")
-            process.terminate()
         
-        # # Step 2: Read the captured PCAP file and write to the output text file
-        # with open(output_file, 'w') as file:
-        #     tshark_read_command = ['sudo','tshark', '-r', pcap_file, '-F', 'k12text', '-w', output_file]
-        #     tshark_process = subprocess.Popen(tshark_read_command, stdout=file, stderr=subprocess.PIPE)
-        #     tshark_process.communicate()  # Wait for TShark to finish
+        # Define the tcpdump capture command
+        capture_command = ['sudo', 'tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
+        
+        # Open the output file in write mode to save the tcpdump output
+        with open(output_file, 'w') as file:
+            # Start the tcpdump process and redirect stdout to the file
+            process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
+            
+            try:
+                # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
+                process.wait()
+            except KeyboardInterrupt:
+                print("\nCapture stopped.")
+                process.terminate()
         
         print(f"Output saved to {output_file}.")
     
     except Exception as e:
-        print(f"An error occurred: {e}") 
+        print(f"An error occurred: {e}")
 
+# Example usage
+# capture_traffic('eth0', 'captured_output.txt', '10')
 
 
 def main():
