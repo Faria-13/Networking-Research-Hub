@@ -31,7 +31,8 @@ def capture_traffic(interface, output_file, num_of_packets):
         
         
         interface = interface.split()
-        capture_command = ['sudo','tshark', '-i', interface[0], '-w', pcap_file, '-c', num_of_packets]
+        # capture_command = ['sudo','tshark', '-i', interface[0], '-w', pcap_file, '-c', num_of_packets]
+        capture_command = ['sudo','tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', num_of_packets]
         process = subprocess.Popen(capture_command, stderr=subprocess.PIPE)
         try:
             process.wait()  # Wait stage until keyboard interrupt
@@ -39,11 +40,11 @@ def capture_traffic(interface, output_file, num_of_packets):
             print("\nCapture stopped.")
             process.terminate()
         
-        # Step 2: Read the captured PCAP file and write to the output text file
-        with open(output_file, 'w') as file:
-            tshark_read_command = ['sudo','tshark', '-r', pcap_file, '-F', 'k12text', '-w', output_file]
-            tshark_process = subprocess.Popen(tshark_read_command, stdout=file, stderr=subprocess.PIPE)
-            tshark_process.communicate()  # Wait for TShark to finish
+        # # Step 2: Read the captured PCAP file and write to the output text file
+        # with open(output_file, 'w') as file:
+        #     tshark_read_command = ['sudo','tshark', '-r', pcap_file, '-F', 'k12text', '-w', output_file]
+        #     tshark_process = subprocess.Popen(tshark_read_command, stdout=file, stderr=subprocess.PIPE)
+        #     tshark_process.communicate()  # Wait for TShark to finish
         
         print(f"Output saved to {output_file}.")
     
