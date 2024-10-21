@@ -44,4 +44,4 @@ def format_hex_data(hex_data):
 
 
 # Call the function with the input and output file paths
-process_tcpdump_output('tcpdump.txt', 'cleaned_tcpdump.txt')
+process_tcpdump_output('foobar.txt', 'cleaned_foobar.txt')
