@@ -68,4 +68,4 @@ def parse_packets(input_file, output_file):
             last_epoch = epoch_time
 
 # Call the function
-parse_packets('cleaned_foobar.txt', 'trial_csv.csv')
+parse_packets('cleaned_foobar.txt', 'foobar_csv.csv')
