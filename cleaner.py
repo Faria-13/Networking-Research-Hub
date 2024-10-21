@@ -17,7 +17,8 @@ def parse_packet_file(input_filename, output_filename):
                 if timestamp and hex_data:             # this becomes true after the program has read both the lines
                     # Clean up the hex data by removing spaces and '|'
                     clean_hex = hex_data.replace("|", "").replace(" ", "").lower()
-                   
+                    if clean_hex.startswith('0'):
+                        clean_hex = clean_hex[1:]
                     outfile.write(f"{timestamp}\n{clean_hex}\n")
 
                 # Reset for the next packet
@@ -33,4 +34,4 @@ def parse_packet_file(input_filename, output_filename):
             outfile.write(f"{timestamp}\n{clean_hex}\n")
 
 # Call the function with input and output file paths
-parse_packet_file('foobar.txt', 'cleaned_foobar.txt')
+parse_packet_file('trial1.txt', 'cleaned_trial.txt')

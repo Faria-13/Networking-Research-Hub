@@ -24,7 +24,7 @@ def list_interfaces():
 
 
 def capture_traffic(interface, output_file, num_of_packets):
-    """Captures traffic on the selected interface and writes the output to a file."""
+    
     pcap_file = 'rawcap.pcapng'  # this file has alr been created and 777 on permissions
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
@@ -88,5 +88,4 @@ def main():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-if __name__ == "__main__":
-    main()
+

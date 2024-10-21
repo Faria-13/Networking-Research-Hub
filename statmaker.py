@@ -72,4 +72,4 @@ def analyze_packets_from_file(filename):
         print(f"  {proto}: {percent:.2f}%")
 
 # Call the function with the path to your file
-analyze_packets_from_file('cleaned_foobar.txt')
+analyze_packets_from_file('cleaned_trial.txt')
