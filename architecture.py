@@ -7,30 +7,32 @@ def main():
     print("\n\n Welcome to Faria's version of Wireshark \n\n")
 
     while True:
-        if ask_user("Do you want to start the capture process? (y/n) Q to quit ") == True:
+        res = ask_user("Do you want to start the capture process? (y/n) Q to quit ")
+        if  res == True:
             capture.main()
-        elif ask_user("Do you want to start the capture process? (y/n) Q to quit ") == 'q':
+        elif res == 'q':
             break
         else:
             continue
-
-        if ask_user("Do you want to clean the tcpdump output? (y/n) Q to quit") == True:
+        
+        res = ask_user("Do you want to clean the tcpdump output? (y/n) Q to quit")
+        if res == True:
             cleaner2.process_tcpdump_output('foobar.txt', 'cleaned_foobar.txt')
-        elif ask_user("Do you want to clean the tcpdump output? (y/n) Q to quit") == 'q':
+        elif res == 'q':
             break
         else:
             continue
-
-        if ask_user("Do you want to see some stats? (y/n) Q to quit ") == True:
+        res = ask_user("Do you want to see some stats? (y/n) Q to quit ")
+        if res == True:
             statmaker.analyze_packets_from_file("cleaned_foobar.txt")
-        elif ask_user("Do you want to see some stats? (y/n) Q to quit") == 'q':
+        elif res == 'q':
             break
         else:
             continue
-
-        if ask_user("Do you want to parse packets into a CSV file? (y/n) Q to quit ") == True:
+        res = ask_user("Do you want to parse packets into a CSV file? (y/n) Q to quit ")
+        if res == True:
             csvmaker.parse_packets("cleaned_foobar.txt", "foobar_csv.csv")
-        elif ask_user("Do you want to parse packets into a CSV file? (y/n) Q to quit ") == 'q':
+        elif res == 'q':
             break
         else:
             continue
