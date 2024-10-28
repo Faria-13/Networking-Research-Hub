@@ -66,6 +66,7 @@ def parse_packets(input_file, output_file):
 
             csv_writer.writerow([timestamp, epoch_time, delta, protocol, source_port, packet_size])
             last_epoch = epoch_time
+        print(f'Packets have been parsed into {outfile}')
 
 # Call the function
 parse_packets('cleaned_foobar.txt', 'foobar_csv.csv')

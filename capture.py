@@ -86,6 +86,8 @@ def main():
         # function call
         capture_traffic(interfaces[choice], output_file, num_of_packets)
 
+        print(f"{num_of_packets} packets have been saved to {output_file}")
+
     except ValueError:
         print("Invalid input. Please enter a valid number.")
     except Exception as e:

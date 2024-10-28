@@ -30,10 +30,10 @@ def process_tcpdump_output(input_filename, output_filename):
 
 def format_timestamp(timestamp):
     # Convert '2024-10-20 20:33:11.440718' to '20:33:11,440,718'
-    print(timestamp)
+ 
     date_time, microseconds = timestamp.split('.')
     time_part = date_time.split()[1]  # '20:33:11'
-    print(microseconds)
+    
     formatted_timestamp = time_part + ',' + microseconds[:3] + ',' + microseconds[3:]
     return formatted_timestamp
 

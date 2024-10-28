@@ -20,6 +20,45 @@ def extract_packet_info(packet_hex):
 
     return protocol, total_length
 
+def classifier(hex_string):
+    # Convert the hex string into bytes
+    packet = bytes.fromhex(hex_string)
+    
+    # Ethernet frame structure:
+    # 14 bytes header: Destination MAC (6) + Source MAC (6) + EtherType (2)
+    dest_mac = packet[0:6]
+    src_mac = packet[6:12]
+    ether_type = packet[12:14]
+
+    # Convert EtherType to integer
+    ether_type_int = int.from_bytes(ether_type, byteorder='big')
+
+    # Check for ICMP (0x0800) or ARP (0x0806)
+    if ether_type_int == 0x0800:  # IPv4
+        # Check for ICMP (protocol number 1)
+        protocol = packet[23]  # The protocol field is at byte 23 for IPv4
+        if protocol == 1:  # ICMP
+            icmp_type = packet[34]  # ICMP type is at byte 34
+            if icmp_type == 0:
+                return "ICMP Reply"
+            elif icmp_type == 8:
+                return "ICMP Request"
+            else:
+                return "ICMP Other"
+        else:
+            return "Not an ICMP packet"
+    
+    elif ether_type_int == 0x0806:  # ARP
+        arp_opcode = int.from_bytes(packet[20:22], byteorder='big')  # ARP opcode is at bytes 20-21
+        if arp_opcode == 1:
+            return "ARP Request"
+        elif arp_opcode == 2:
+            return "ARP Reply"
+        else:
+            return "ARP Other"
+    
+    return "Unknown Packet Type"
+
 def analyze_packets_from_file(filename):
     protocol_distribution = defaultdict(int)
     packet_sizes = []
@@ -35,6 +74,9 @@ def analyze_packets_from_file(filename):
 
         # Extract protocol and size from the packet hex string
         protocol, packet_size = extract_packet_info(packet_hex)
+
+        classic = classifier(packet_hex)
+        print(classic)
         
         # Count protocol occurrences
         protocol_distribution[protocol] += 1
