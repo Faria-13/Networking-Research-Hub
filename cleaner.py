@@ -34,4 +34,4 @@ def parse_packet_file(input_filename, output_filename):
             outfile.write(f"{timestamp}\n{clean_hex}\n")
 
 # Call the function with input and output file paths
-parse_packet_file('trial1.txt', 'cleaned_trial.txt')
+parse_packet_file('icmptrial.txt', 'cleanedicmptrial.txt')

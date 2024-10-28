@@ -21,24 +21,21 @@ def extract_packet_info(packet_hex):
     return protocol, total_length
 
 def classifier(hex_string):
-    # Convert the hex string into bytes
-    packet = bytes.fromhex(hex_string)
-    
-    # Ethernet frame structure:
-    # 14 bytes header: Destination MAC (6) + Source MAC (6) + EtherType (2)
-    dest_mac = packet[0:6]
-    src_mac = packet[6:12]
-    ether_type = packet[12:14]
-
-    # Convert EtherType to integer
-    ether_type_int = int.from_bytes(ether_type, byteorder='big')
+    # Extract the EtherType field (bytes 12-13 in the Ethernet header, hex positions 24-27)
+    ether_type_hex = hex_string[24:28]
+    ether_type_int = int(ether_type_hex, 16)
 
     # Check for ICMP (0x0800) or ARP (0x0806)
     if ether_type_int == 0x0800:  # IPv4
-        # Check for ICMP (protocol number 1)
-        protocol = packet[23]  # The protocol field is at byte 23 for IPv4
+        # Check the protocol field (hex positions 46-47)
+        protocol_hex = hex_string[46:48]
+        protocol = int(protocol_hex, 16)
+        
         if protocol == 1:  # ICMP
-            icmp_type = packet[34]  # ICMP type is at byte 34
+            # Check the ICMP type field (byte 34 in the ICMP header, hex positions 68-69)
+            icmp_type_hex = hex_string[68:70]
+            icmp_type = int(icmp_type_hex, 16)
+            
             if icmp_type == 0:
                 return "ICMP Reply"
             elif icmp_type == 8:
@@ -49,7 +46,10 @@ def classifier(hex_string):
             return "Not an ICMP packet"
     
     elif ether_type_int == 0x0806:  # ARP
-        arp_opcode = int.from_bytes(packet[20:22], byteorder='big')  # ARP opcode is at bytes 20-21
+        # Check the ARP opcode (bytes 20-21 in the ARP header, hex positions 40-43)
+        arp_opcode_hex = hex_string[40:44]
+        arp_opcode = int(arp_opcode_hex, 16)
+        
         if arp_opcode == 1:
             return "ARP Request"
         elif arp_opcode == 2:
@@ -59,9 +59,24 @@ def classifier(hex_string):
     
     return "Unknown Packet Type"
 
+def format_packet_hex(packet_hex, length=128):
+    
+    if len(packet_hex) > length:
+        return packet_hex[:length]
+    # Pad with '0's if shorter than 128 characters, new function unlocked wooohooo
+    return packet_hex.ljust(length, '0')
+
+def save_packet_to_file(packet_hex, filename):
+    with open(filename, 'a') as file:
+        formatted_packet_hex = format_packet_hex(packet_hex)
+        file.write(f"{formatted_packet_hex}\n")
+
 def analyze_packets_from_file(filename):
     protocol_distribution = defaultdict(int)
     packet_sizes = []
+
+    selected_packet_file = "megacleanfoobar.txt"
+    open(selected_packet_file, 'w').close()  # Open in 'w' mode to clear contents
     
     # Read the file
     with open(filename, 'r') as file:
@@ -76,7 +91,11 @@ def analyze_packets_from_file(filename):
         protocol, packet_size = extract_packet_info(packet_hex)
 
         classic = classifier(packet_hex)
-        #print(classic)
+        
+        
+        if classic in ["ICMP Reply", "ICMP Request", "ARP Request", "ARP Reply"]:
+            #print(classic)
+            save_packet_to_file(packet_hex, selected_packet_file)
         
         # Count protocol occurrences
         protocol_distribution[protocol] += 1
@@ -112,6 +131,8 @@ def analyze_packets_from_file(filename):
     print("Protocol Distribution (percentage):")
     for proto, percent in protocol_percentage.items():
         print(f"  {proto}: {percent:.2f}%")
+    
+    print(f"\n\n Selected Packets have been saved to {selected_packet_file}")
 
 # Call the function with the path to your file
-analyze_packets_from_file('cleaned_foobar.txt')
+analyze_packets_from_file('cleanedicmptrial.txt')
