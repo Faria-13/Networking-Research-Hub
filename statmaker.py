@@ -76,7 +76,7 @@ def analyze_packets_from_file(filename):
         protocol, packet_size = extract_packet_info(packet_hex)
 
         classic = classifier(packet_hex)
-        print(classic)
+        #print(classic)
         
         # Count protocol occurrences
         protocol_distribution[protocol] += 1

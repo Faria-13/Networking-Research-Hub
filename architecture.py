@@ -44,10 +44,10 @@ def ask_user(question):
         response = input(question).strip().lower()
         if response in ['y', 'Y']:
             return response == 'y'
-        elif response == 'Q':
+        elif response in ['Q', 'q']:
             return response == 'q'
         print("Invalid input")
-        return response =='y'
+        return response =='meh'
         
 
 main()
