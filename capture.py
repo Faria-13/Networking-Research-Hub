@@ -86,7 +86,8 @@ def main():
             print("Invalid file name. Exiting.")
             return
         output_file = output_file.split(".")[0]
-        num_of_packets = input ("How many packets do you want captured? ")
+        print("SPLITTING  ", output_file)
+        num_of_packets = int(input ("How many packets do you want captured? "))
 
         num_of_files = input ("How many files do you want them to be in (i.e 1,2,3): ")
 
