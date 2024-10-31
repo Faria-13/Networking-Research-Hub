@@ -34,7 +34,7 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
         interface = interface.split()
         num_of_packets = num_of_packets/num_of_files
         
-        for i in num_of_files:
+        for i in range(num_of_files):
 
         # Define the tcpdump capture command
             capture_command = ['sudo', 'tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
