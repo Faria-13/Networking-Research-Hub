@@ -70,4 +70,4 @@ def parse_packets(input_file, output_file):
         print(f'Packets have been parsed into {outfile}')
 
 # Call the function
-parse_packets('cleaned_foobar.txt', 'foobar_csv.csv')
+#parse_packets('cleaned_foobar.txt', 'foobar_csv.csv')

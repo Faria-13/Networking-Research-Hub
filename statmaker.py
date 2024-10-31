@@ -135,4 +135,4 @@ def analyze_packets_from_file(filename):
     print(f"\n\n Selected Packets have been saved to {selected_packet_file}")
 
 # Call the function with the path to your file
-analyze_packets_from_file('cleanedicmptrial.txt')
+#analyze_packets_from_file('cleanedicmptrial.txt')
