@@ -89,7 +89,7 @@ def main():
         print("SPLITTING  ", output_file)
         num_of_packets = int(input ("How many packets do you want captured? "))
 
-        num_of_files = input ("How many files do you want them to be in (i.e 1,2,3): ")
+        num_of_files = int(input ("How many files do you want them to be in (i.e 1,2,3): "))
 
         # function call
         capture_traffic(interfaces[choice], output_file, num_of_packets, num_of_files)
