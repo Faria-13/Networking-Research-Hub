@@ -37,12 +37,12 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
         for i in range(num_of_files):
 
         # Define the tcpdump capture command
-            capture_command = ['sudo', 'tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
+            capture_command = ['tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
             print("AAAAAAAAAAA ", output_file)
-            output_file = output_file + str(i+1) + '.txt'
+            new_output_file = output_file + str(i+1) + '.txt'
             capture_file_list.append(output_file)
         # Open the output file in write mode to save the tcpdump output
-            with open(output_file, 'w') as file:
+            with open(new_output_file, 'w') as file:
                 # Start the tcpdump process and redirect stdout to the file
                 process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
                 
