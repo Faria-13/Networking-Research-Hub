@@ -1,6 +1,8 @@
 import os
 import subprocess
 
+capture_file_list = []
+
 def list_interfaces():
     """Lists network interfaces using tcpdump -D command"""
     try:
@@ -24,35 +26,37 @@ def list_interfaces():
 
 import subprocess
 
-def capture_traffic(interface, output_file, num_of_packets):
+def capture_traffic(interface, output_file, num_of_packets, num_of_files):
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
         
         # Split the interface string to handle multiple words if necessary
         interface = interface.split()
+        num_of_packets = num_of_packets/num_of_files
         
+        for i in num_of_files:
+
         # Define the tcpdump capture command
-        capture_command = ['sudo', 'tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
-        
+            capture_command = ['sudo', 'tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
+            output_file = output_file + str(i+1) + '.txt'
+            capture_file_list.append(output_file)
         # Open the output file in write mode to save the tcpdump output
-        with open(output_file, 'w') as file:
-            # Start the tcpdump process and redirect stdout to the file
-            process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
-            
-            try:
-                # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
-                process.wait()
-            except KeyboardInterrupt:
-                print("\nCapture stopped.")
-                process.terminate()
+            with open(output_file, 'w') as file:
+                # Start the tcpdump process and redirect stdout to the file
+                process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
+                
+                # try:
+                #     # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
+                #     process.wait()
+                # except KeyboardInterrupt:
+                #     print("\nCapture stopped.")
+                #     process.terminate()
         
-        print(f"Output saved to {output_file}.")
+        print(f"Output saved to {capture_file_list}.")
     
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Example usage
-# capture_traffic('eth0', 'captured_output.txt', '10')
 
 
 def main():
@@ -75,16 +79,18 @@ def main():
             return
         
         # Ask the user for the output filename
-        # output_file = input("Enter the name of the output file (e.g., foobar.txt): ")
-        output_file = 'foobar.txt'
+        output_file = input("Enter the name of the output file (e.g., foobar.txt): ")
+        
         if not output_file:
             print("Invalid file name. Exiting.")
             return
+        output_file = output_file.split(".")[0]
+        num_of_packets = input ("How many packets do you want captured? ")
 
-        num_of_packets = input ("How many packets do you want captured?")
+        num_of_files = input ("How many files do you want them to be in (i.e 1,2,3): ")
 
         # function call
-        capture_traffic(interfaces[choice], output_file, num_of_packets)
+        capture_traffic(interfaces[choice], output_file, num_of_packets, num_of_files)
 
         print(f"{num_of_packets} packets have been saved to {output_file}")
 
@@ -92,5 +98,7 @@ def main():
         print("Invalid input. Please enter a valid number.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+main()
 
 
