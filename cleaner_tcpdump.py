@@ -52,8 +52,8 @@ def format_hex_data(hex_data):
 def main():
     raw_file_list_len = len(capture.capture_file_list)
    
-    cleaned_dataset_dir="C:\Users\aurpy\Downloads\Networking-code\Networking-Research-Hub\cleaned_datasets\\"
-    numpy_dir="C:\Users\aurpy\Downloads\Networking-code\Networking-Research-Hub\numpy\\"
+    cleaned_dataset_dir="cleaned_datasets\\"
+    numpy_dir="numpy\\"
 
     for i in range(raw_file_list_len):
         original_capture_file= capture.capture_file_list[i]
