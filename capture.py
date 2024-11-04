@@ -53,12 +53,12 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
                 # Start the tcpdump process and redirect stdout to the file
                 process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
-                try:
-                    # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
-                    process.wait()
-                except KeyboardInterrupt:
-                    print("\nCapture stopped.")
-                    process.terminate()
+                # try:
+                #     # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
+                #     process.wait()
+                # except KeyboardInterrupt:
+                #     print("\nCapture stopped.")
+                #     process.terminate()
         
         print(f"Output saved to {capture_file_list}.")
     
