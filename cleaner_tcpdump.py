@@ -51,6 +51,7 @@ def format_hex_data(hex_data):
 
 def main():
     raw_file_list_len = len(capture.capture_file_list)
+    print("AAAAAAAAA ", capture.capture_file_list)
    
     cleaned_dataset_dir="cleaned_datasets/"
     numpy_dir="numpy/"
@@ -88,6 +89,8 @@ def main():
             print(f"Empty file created: {y_label_file_name}")
             
         process_tcpdump_output(original_capture_file, cleaned_file_name)
+
+
 
 
 
