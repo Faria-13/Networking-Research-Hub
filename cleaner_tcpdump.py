@@ -1,3 +1,9 @@
+import os
+import capture
+cleaned_file_list = []
+X_test_file_list = []
+Y_test_file_list = []
+
 def process_tcpdump_output(input_filename, output_filename):
     with open(input_filename, 'r') as infile, open(output_filename, 'w') as outfile:
         lines = infile.readlines()
@@ -43,5 +49,45 @@ def format_hex_data(hex_data):
     return hex_data.lower()
 
 
-# Call the function with the input and output file paths
-process_tcpdump_output('foobar.txt', 'cleaned_foobar.txt')
+def main():
+    raw_file_list_len = len(capture.capture_file_list)
+   
+    cleaned_dataset_dir="C:\Users\aurpy\Downloads\Networking-code\Networking-Research-Hub\cleaned_datasets\\"
+    numpy_dir="C:\Users\aurpy\Downloads\Networking-code\Networking-Research-Hub\numpy\\"
+
+    for i in range(raw_file_list_len):
+        original_capture_file= capture.capture_file_list[i]
+        cleaned_file_name = cleaned_dataset_dir + original_capture_file.split(".")[0] + "_cleaned.txt"
+        x_features_file_name = numpy_dir + original_capture_file.split(".")[0] + "_features.npy"
+        y_label_file_name = numpy_dir + original_capture_file.split(".")[0] + "_labels.npy"
+        print(cleaned_file_name)
+
+        if not os.path.exists(cleaned_file_name):
+        #make the clean file 
+            with open(cleaned_file_name, 'w') as file:
+                pass  # just Create the file 
+            cleaned_file_list.append(cleaned_file_name)
+            print(f"Empty file created: {cleaned_file_name}")
+
+        #make the numpy X features files 
+            with open(x_features_file_name, 'w') as file:
+                pass  
+            X_test_file_list.append(x_features_file_name)
+            print(f"Empty file created: {x_features_file_name}")
+
+        #make the numpy Y labels file 
+            with open(y_label_file_name, 'w') as file:
+                pass  # Create the file without writing any content
+            Y_test_file_list.append(y_label_file_name)
+            print(f"Empty file created: {y_label_file_name}")
+            
+        process_tcpdump_output(original_capture_file, cleaned_file_name)
+
+
+
+
+
+
+
+
+

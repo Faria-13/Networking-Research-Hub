@@ -37,8 +37,10 @@ def classifier(hex_string):
             icmp_type = int(icmp_type_hex, 16)
             
             if icmp_type == 0:
+                print("ICMP Reply")
                 return "ICMP Reply"
             elif icmp_type == 8:
+                print("ICMP Req")
                 return "ICMP Request"
             else:
                 return "ICMP Other"
@@ -51,8 +53,10 @@ def classifier(hex_string):
         arp_opcode = int(arp_opcode_hex, 16)
         
         if arp_opcode == 1:
+            print("ARP Request")
             return "ARP Request"
         elif arp_opcode == 2:
+            print("ARP Reply")
             return "ARP Reply"
         else:
             return "ARP Other"
@@ -135,4 +139,4 @@ def analyze_packets_from_file(filename):
     print(f"\n\n Selected Packets have been saved to {selected_packet_file}")
 
 # Call the function with the path to your file
-#analyze_packets_from_file('cleanedicmptrial.txt')
+analyze_packets_from_file('cleanedicmptrial.txt')

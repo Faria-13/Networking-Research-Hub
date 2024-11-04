@@ -1,5 +1,5 @@
 import capture
-import cleaner2
+import cleaner_tcpdump
 import statmaker
 import csvmaker
 
@@ -22,7 +22,7 @@ def main():
         if choice == '1':
             capture.main()
         elif choice == '2':
-            cleaner2.process_tcpdump_output('foobar.txt', 'cleaned_foobar.txt')
+            cleaner_tcpdump.process_tcpdump_output('foobar.txt', 'cleaned_foobar.txt')
         elif choice == '3':
             statmaker.analyze_packets_from_file("cleaned_foobar.txt")
         elif choice == '4':
