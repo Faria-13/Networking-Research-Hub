@@ -55,6 +55,12 @@ def main():
     cleaned_dataset_dir="cleaned_datasets/"
     numpy_dir="numpy/"
 
+    if not os.path.exists(cleaned_dataset_dir):
+        os.makedirs(cleaned_dataset_dir)
+
+    if not os.path.exists(numpy_dir):
+        os.makedirs(numpy_dir)
+
     for i in range(raw_file_list_len):
         original_capture_file= capture.capture_file_list[i]
         cleaned_file_name = cleaned_dataset_dir + original_capture_file.split(".")[0] + "_cleaned.txt"
