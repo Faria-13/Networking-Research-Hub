@@ -38,13 +38,13 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
         
         # Split the interface string to handle multiple words if necessary
         interface = interface.split()
-        num_of_packets = num_of_packets/num_of_files
+        num_of_packets = num_of_packets//num_of_files
         print(num_of_packets)
         
         for i in range(num_of_files):
 
         # Define the tcpdump capture command
-            capture_command = ['tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', int(num_of_packets)]
+            capture_command = ['tcpdump', '-xx', '-tttt', '-i', interface[0], '-c', str(num_of_packets)]
             new_output_file = dataset_dir + output_file + str(i+1) + '.txt'
             print("AAAAAAAAAAA ", new_output_file)
             capture_file_list.append(new_output_file)
