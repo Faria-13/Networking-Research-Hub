@@ -28,8 +28,8 @@ import subprocess
 
 def capture_traffic(interface, output_file, num_of_packets, num_of_files):
     
-    dataset_dir="C:\Users\aurpy\Downloads\Networking-code\Networking-Research-Hub\datasets"
-    
+    dataset_dir="C:\Users\aurpy\Downloads\Networking-code\Networking-Research-Hub\datasets\\"
+
     try:
         print(f"Capturing traffic on {interface}... Press Ctrl+C to stop.")
         
