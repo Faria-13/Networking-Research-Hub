@@ -40,6 +40,7 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
         interface = interface.split()
         num_of_packets = num_of_packets//num_of_files
         print(num_of_packets)
+        print(interface[0])
         
         for i in range(num_of_files):
 
@@ -53,6 +54,8 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
                 # Start the tcpdump process and redirect stdout to the file
                 process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
+                if stderr:
+                    print(f"tcpdump error: {stderr.decode()}")
                 # try:
                 #     # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
                 #     process.wait()
