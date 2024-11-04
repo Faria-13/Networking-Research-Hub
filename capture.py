@@ -49,9 +49,9 @@ def capture_traffic(interface, output_file, num_of_packets, num_of_files):
             print("AAAAAAAAAAA ", new_output_file)
             capture_file_list.append(new_output_file)
         # Open the output file in write mode to save the tcpdump output
-            with open(output_file, 'w') as file:
+            with open(new_output_file, 'w') as file:
                 # Start the tcpdump process and redirect stdout to the file
-                process = subprocess.Popen(capture_command, stdout=file, stderr=subprocess.PIPE)
+                process = subprocess.Popen(capture_command, stdout=new_output_file, stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
                 try:
                     # Wait for the process to finish or until keyboard interrupt (Ctrl+C)
