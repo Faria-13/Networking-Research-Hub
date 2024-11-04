@@ -28,7 +28,7 @@ import subprocess
 
 def capture_traffic(interface, output_file, num_of_packets, num_of_files):
     
-    dataset_dir = "datasets\\"
+    dataset_dir = "datasets/"
     if not os.path.exists(dataset_dir):
         os.makedirs(dataset_dir)
 
