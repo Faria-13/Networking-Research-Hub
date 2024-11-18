@@ -37,10 +37,10 @@ def classifier(hex_string):
             icmp_type = int(icmp_type_hex, 16)
             
             if icmp_type == 0:
-                print("ICMP Reply")
+                #print("ICMP Reply")
                 return "ICMP Reply"
             elif icmp_type == 8:
-                print("ICMP Req")
+                #print("ICMP Req")
                 return "ICMP Request"
             else:
                 return "ICMP Other"
@@ -53,10 +53,10 @@ def classifier(hex_string):
         arp_opcode = int(arp_opcode_hex, 16)
         
         if arp_opcode == 1:
-            print("ARP Request")
+            #print("ARP Request")
             return "ARP Request"
         elif arp_opcode == 2:
-            print("ARP Reply")
+            #print("ARP Reply")
             return "ARP Reply"
         else:
             return "ARP Other"
@@ -75,11 +75,11 @@ def save_packet_to_file(packet_hex, filename):
         formatted_packet_hex = format_packet_hex(packet_hex)
         file.write(f"{formatted_packet_hex}\n")
 
-def analyze_packets_from_file(filename):
+def analyze_packets_from_file(filename, selected_packet_file):
     protocol_distribution = defaultdict(int)
     packet_sizes = []
 
-    selected_packet_file = "megacleanfoobar.txt"
+    #selected_packet_file = "megacleanfoobar.txt"
     open(selected_packet_file, 'w').close()  # Open in 'w' mode to clear contents
     
     # Read the file
@@ -98,7 +98,7 @@ def analyze_packets_from_file(filename):
         
         
         if classic in ["ICMP Reply", "ICMP Request", "ARP Request", "ARP Reply"]:
-            #print(classic)
+            # print(classic)
             save_packet_to_file(packet_hex, selected_packet_file)
         
         # Count protocol occurrences
@@ -139,4 +139,4 @@ def analyze_packets_from_file(filename):
     print(f"\n\n Selected Packets have been saved to {selected_packet_file}")
 
 # Call the function with the path to your file
-# analyze_packets_from_file('cleanedicmptrial.txt')
+#analyze_packets_from_file('cleaned_datasets\dataset2_cleaned.txt', 'megacleaned_datasets\dataset2mega_cleaned.txt')
